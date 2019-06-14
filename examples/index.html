@@ -11,12 +11,13 @@
       var data = JSON.stringify({
         "conditions": $("#conditions").conditionsBuilder("data"),
         "actions": $("#actions").actionsBuilder("data")
-      });
+      }, null, 4);
+      $("#request").html("<pre>" + data + "</pre>");
       $.post(
          "/rules/run",
          data,
          function(response) {
-           alert("Response: " + response);
+           $("#response").html(response);
          }
        );
     }
@@ -38,6 +39,13 @@
     <div id="actions"></div>
 
     <button id="submit" type="button" onclick="submit()">Submit</button>
+
+    <hr/>
+    <h3>Request Rule JSON</h3>
+    <div id="request"></div>
+    <hr/>
+    <h3>Response</h3>
+    <div id="response"></div>
   </body>
 </html>
 
