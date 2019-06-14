@@ -2,11 +2,31 @@
 <html>
   <head>
     <title>Conditions Demo</title>
-    <script src="../lib/vendor/jquery.js" type="text/javascript"></script>
-    <script src="../lib/business-rules/conditions-builder.js" type="text/javascript"></script>
-    <script src="../lib/business-rules/actions-builder.js" type="text/javascript"></script>
-    <script src="js/demo.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="css/demo.css" />
+    <script src="{{static_files_url}}/rules/lib/vendor/jquery.js" type="text/javascript"></script>
+    <script src="{{static_files_url}}/rules/lib/business-rules/conditions-builder.js" type="text/javascript"></script>
+    <script src="{{static_files_url}}/rules/lib/business-rules/actions-builder.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="{{static_files_url}}/rules/examples/css/demo.css" />
+    <script type="text/javascript">
+    function submit() {
+      var data = JSON.stringify({
+        "conditions": $("#conditions").conditionsBuilder("data"),
+        "actions": $("#actions").actionsBuilder("data")
+      });
+      $.post(
+         "/rules/run",
+         data,
+         function(response) {
+           alert("Response: " + response);
+         }
+       );
+    }
+    $(function() {
+      $.getJSON("/rules/data", function(data) {
+        $("#conditions").conditionsBuilder(data);
+        $("#actions").actionsBuilder(data);
+      });
+    });
+    </script>
   </head>
   <body>
     <h1>Conditions and Actions Demo</h1>
@@ -17,7 +37,7 @@
     <h3>Do these actions...</h3>
     <div id="actions"></div>
 
-    <button id="submit" type="button">Pretend Submit</button>
+    <button id="submit" type="button" onclick="submit()">Submit</button>
   </body>
 </html>
 
